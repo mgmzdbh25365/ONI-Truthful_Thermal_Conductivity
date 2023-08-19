@@ -1,0 +1,3 @@
+title: "Truthful Thermal Conductivity (精确的热导率)"
+description: "Displays the thermal conductivity without rounding."
+staticID: "ahc.TruthfulThermalConductivity"
