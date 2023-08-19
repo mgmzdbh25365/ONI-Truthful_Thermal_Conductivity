@@ -1,4 +1,4 @@
-# ONI-Truthful_Thermal_Conductivity
+# ONI-Truthful Thermal Conductivity
 
 ![avatar](ONI-Truthful%20Thermal%20Conductivity-cover.png)
 ### Features
