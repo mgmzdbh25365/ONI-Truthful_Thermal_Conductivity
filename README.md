@@ -3,7 +3,7 @@
 ![avatar](ONI-Truthful%20Thermal%20Conductivity-cover.png)
 ### Features
 
-- Thermal conductivity is displayed without rounding, including properties, database, tooltips, info cards(if any), etc.
+- Thermal conductivity is displayed almost without rounding, including properties, database, tooltips, info cards(if any), etc.
 
 ![avatar](ONI-Truthful%20Thermal%20Conductivity.png)
 
@@ -14,7 +14,7 @@
 
 ### 主要特性
 
-- 让热导率正常显示，包括属性，数据库，工具栏，信息栏等，拒绝四舍五入。
+- 让热导率正常显示，包括属性，数据库，工具栏，信息卡片（如果有）等，基本上没有四舍五入。
 
 ![avatar](ONI-Truthful%20Thermal%20Conductivity-zh.png)
 
