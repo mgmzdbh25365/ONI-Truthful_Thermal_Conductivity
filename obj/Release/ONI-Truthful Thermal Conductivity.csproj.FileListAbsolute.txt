@@ -76,3 +76,4 @@ C:\Users\Administrator\source\repos\ONI-Truthful Thermal Conductivity\bin\Releas
 C:\Users\Administrator\source\repos\ONI-Truthful Thermal Conductivity\bin\Release\UnityEngine.XRModule.dll
 C:\Users\Administrator\source\repos\ONI-Truthful Thermal Conductivity\bin\Release\UnityEngine.ARModule.dll
 C:\Users\Administrator\source\repos\ONI-Truthful Thermal Conductivity\bin\Release\UnityEngine.InputModule.dll
+C:\Users\Administrator\source\repos\ONI-Truthful Thermal Conductivity\obj\Release\ONI-Truthful Thermal Conductivity.csproj.AssemblyReference.cache
