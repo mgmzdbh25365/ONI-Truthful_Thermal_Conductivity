@@ -79,6 +79,8 @@ namespace ONI_Truthful_Thermal_Conductivity {
 				data_patch = true;
 			}
 			catch {
+				if (options == null)
+					options = new Options();
 				base.OnLoad(harmony);
 			}
 		}

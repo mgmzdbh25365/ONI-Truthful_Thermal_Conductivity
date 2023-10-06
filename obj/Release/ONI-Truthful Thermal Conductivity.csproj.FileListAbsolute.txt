@@ -76,3 +76,4 @@ C:\Users\Administrator\source\repos\ONI-Truthful Thermal Conductivity\obj\Releas
 C:\Users\Administrator\source\repos\ONI-Truthful Thermal Conductivity\obj\Release\ONI-Truthful Thermal Conductivity.csproj.CopyComplete
 C:\Users\Administrator\source\repos\ONI-Truthful Thermal Conductivity\obj\Release\ONI-Truthful Thermal Conductivity.dll
 C:\Users\Administrator\source\repos\ONI-Truthful Thermal Conductivity\obj\Release\ONI-Truthful Thermal Conductivity.pdb
+C:\Users\Administrator\source\repos\ONI-Truthful Thermal Conductivity\obj\Release\ONI-Truthful Thermal Conductivity.csproj.AssemblyReference.cache
