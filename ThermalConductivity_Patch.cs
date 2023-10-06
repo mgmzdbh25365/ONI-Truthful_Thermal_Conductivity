@@ -10,7 +10,7 @@ namespace ONI_Truthful_Thermal_Conductivity {
 			List<CodeInstruction> code = instr.ToList();
 			foreach (CodeInstruction codeInstruction in code) {
 				if (codeInstruction.opcode == OpCodes.Ldstr && (string)codeInstruction.operand == "0.000")
-					codeInstruction.operand = Options.format;
+					codeInstruction.operand = Main.format;
 				yield return codeInstruction;
 			}
 		}

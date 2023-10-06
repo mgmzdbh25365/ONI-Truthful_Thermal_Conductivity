@@ -2,18 +2,17 @@
 using System.Linq;
 using System.Reflection.Emit;
 using HarmonyLib;
-using ONI_Truthful_Thermal_Conductivity;
 
-namespace SuperMinerMod {
-	[HarmonyPatch(typeof(AdditionalDetailsPanel) , "RefreshDetails")]
+namespace ONI_Truthful_Thermal_Conductivity {
+    [HarmonyPatch(typeof(AdditionalDetailsPanel) , "RefreshDetails")]
 	public class Details_Patch {
-		private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr) {
+		public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr) {
 			bool isThermalConductivity = false;
 			List<CodeInstruction> code = instr.ToList();
 			foreach (CodeInstruction codeInstruction in code) {
 				if (codeInstruction.opcode == OpCodes.Ldstr && (string)codeInstruction.operand == "0.000") {
 					if (isThermalConductivity)
-						codeInstruction.operand = Options.format;
+						codeInstruction.operand = Main.format;
 					else
 						isThermalConductivity = true;
 				}
