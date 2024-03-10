@@ -1,0 +1,71 @@
+msgid ""
+msgstr ""
+"Application: Oxygen Not Included"
+"POT Version: 2.0"
+
+#. ONI_Truthful_Thermal_Conductivity.STRINGS.TITLE
+msgctxt "ONI_Truthful_Thermal_Conductivity.STRINGS.TITLE"
+msgid "Truthful Thermal Conductivity"
+msgstr ""
+
+#. ONI_Truthful_Thermal_Conductivity.STRINGS.DESCRIPTION
+msgctxt "ONI_Truthful_Thermal_Conductivity.STRINGS.DESCRIPTION"
+msgid "Make thermal conductivity displayed almost without rounding, including properties, database, tooltips, info cards(if any), etc.\n- You can click the button on the module interface to switch the accuracy of the thermal conductivity display."
+msgstr ""
+
+#. ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_LOW
+msgctxt "ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_LOW"
+msgid "low"
+msgstr ""
+
+#. ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_NORMAL
+msgctxt "ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_NORMAL"
+msgid "normal"
+msgstr ""
+
+#. ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_HIGH
+msgctxt "ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_HIGH"
+msgid "high"
+msgstr ""
+
+#. ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_STRICT
+msgctxt "ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_STRICT"
+msgid "strict"
+msgstr ""
+
+#. ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_CRAZY
+msgctxt "ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_CRAZY"
+msgid "crazy"
+msgstr ""
+
+#. ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_TIPS_LOW
+msgctxt "ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_TIPS_LOW"
+msgid "Retained 3 decimal places, consistent with the original version."
+msgstr ""
+
+#. ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_TIPS_NORMAL
+msgctxt "ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_TIPS_NORMAL"
+msgid "Fixed to 3 decimal places, displaying up to 8 decimal places."
+msgstr ""
+
+#. ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_TIPS_HIGH
+msgctxt "ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_TIPS_HIGH"
+msgid "Fixed to 3 decimal places, displaying at least 7 significant digits."
+msgstr ""
+
+#. ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_TIPS_STRICT
+msgctxt "ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_TIPS_STRICT"
+msgid "At this precision, it ensures that the string can be converted to the same single float value."
+msgstr ""
+
+#. ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_TIPS_CRAZY
+msgctxt "ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_TIPS_CRAZY"
+msgid "Retain up to 99 significant digits."
+msgstr ""
+
+#. ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_DESCRIPTION
+msgctxt "ONI_Truthful_Thermal_Conductivity.STRINGS.MODE_DESCRIPTION"
+msgid "this mode,\"1/9(0.111111111938953399658203125)\"will be displayed as:{0}\nClick to switch the accuracy of the thermal conductivity display.\nLong press and hold the mouse to switch the units displayed for thermal conductivity."
+msgstr ""
+
+

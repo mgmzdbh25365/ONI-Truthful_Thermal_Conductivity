@@ -1,3 +1,3 @@
 title: "Truthful Thermal Conductivity"
-description: "- Thermal conductivity is displayed almost without rounding, including properties, database, tooltips, info cards(if any), etc.\n- You can click the button on the module interface to switch the accuracy of the thermal conductivity display."
+description: "Make thermal conductivity displayed almost without rounding, including properties, database, tooltips, info cards(if any), etc.\n- You can click the button on the module interface to switch the accuracy of the thermal conductivity display."
 staticID: "ahc.TruthfulThermalConductivity"

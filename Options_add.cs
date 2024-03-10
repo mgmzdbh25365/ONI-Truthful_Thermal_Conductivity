@@ -10,7 +10,6 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace ONI_Truthful_Thermal_Conductivity {
-	[HarmonyPatch(typeof(ModsScreen) , "BuildDisplay")]
 	class Options_add {
 		public static void Postfix(IList ___displayedMods) {
 			if (___displayedMods == null)
@@ -47,6 +46,8 @@ namespace ONI_Truthful_Thermal_Conductivity {
 			}
 			if (displayedMod == null)
 				return;
+			if (Main.main.button != null)
+				return;
 			RectTransform rect = (RectTransform)field_rect.GetValue(displayedMod);
 			if (rect == null)
 				return;
@@ -54,17 +55,64 @@ namespace ONI_Truthful_Thermal_Conductivity {
 			if (hierarchyReferences == null)
 				return;
 			try {
-				if (Localization.GetLocale().Code.ToUpper().StartsWith("ZH")) {
-					Main.main.modeName = Main.modeName_ZH;
-					Main.main.modeTips = Main.modeTips_ZH;
-					hierarchyReferences.GetReference<LocText>("Title").text = "精确的热导率 (Truthful Thermal Conductivity)";
-					Main.main.tooltip = Main.tooltip_ZH;
-					hierarchyReferences.GetReference<ToolTip>("Description").toolTip = "- 让热导率正常显示，包括属性，数据库，工具栏，信息卡片（如果有）等，基本上没有四舍五入。\n- 可以点击模组界面的按钮来切换热导率显示的精准程度。";
+				string code = Localization.GetCurrentLanguageCode();
+				if (string.IsNullOrEmpty(code)) {
+					code = Localization.GetLocale().Code;
 				}
+				if (code == null)
+					code = "";
+				string translations_path = Path.Combine(Main.main.path , "translations");
+				string[] checklist = new string[]{
+					Path.Combine(translations_path , "strings_template.po"),
+					Path.Combine(translations_path , code + ".po"),
+					Path.Combine(translations_path , code.Substring(0,code.IndexOf('_')) + ".po")
+				};
+                foreach (var path in checklist) {
+					if (File.Exists(path)) {
+						STRINGS.Localize(path);
+						hierarchyReferences.GetReference<LocText>("Title").text = STRINGS.TITLE;
+						hierarchyReferences.GetReference<ToolTip>("Description").toolTip = STRINGS.DESCRIPTION;
+						goto done;
+					}
+                }
+
+				if (code != STRINGS.DEFAULT_LANGUAGE_CODE) {
+					string format_code = code.ToLower();
+					if (format_code.IndexOf('_') != -1)
+						format_code = code.Substring(0 , code.IndexOf('_')).ToLower();
+
+					bool supported = false;
+					switch (format_code) {
+						case "zh":
+							STRINGS.Localize_zh();
+							supported = true;
+							break;
+					}
+					if (supported) {
+						hierarchyReferences.GetReference<LocText>("Title").text = STRINGS.TITLE;
+						hierarchyReferences.GetReference<ToolTip>("Description").toolTip = STRINGS.DESCRIPTION;
+					}
+					else {
+						try {
+							if ((!File.Exists(Path.Combine(translations_path , "strings_template.pot"))) || File.GetLastWriteTime(Path.Combine(translations_path , "strings_template.pot")) < File.GetLastWriteTime(Path.Combine(Main.main.path , "TruthfulThermalConductivity.dll"))) {
+								using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("ONI_Truthful_Thermal_Conductivity.strings_template.pot")) {
+									if (stream != null) {
+										if(!Directory.Exists(translations_path))
+											Directory.CreateDirectory(translations_path);
+										using (FileStream file = new FileStream(Path.Combine(translations_path , "strings_template.pot") , FileMode.OpenOrCreate)) {
+											stream.CopyTo(file);
+										}
+									}
+								}
+							}
+						}
+						catch { }
+					}
+				}
+
 			}
 			catch { }
-			if (Main.main.button != null)
-				return;
+		done:
 			KButton kButton = Main.main.button = Util.KInstantiateUI<KButton>(hierarchyReferences.GetReference<KButton>("ManageButton").gameObject , hierarchyReferences.gameObject , false);
 			kButton.name = "SwitchButton";
 			kButton.GetComponentInChildren<LocText>().text = Main.main.modeName[Main.options.mode];

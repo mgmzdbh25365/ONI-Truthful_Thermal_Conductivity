@@ -4,7 +4,6 @@ using System.Reflection.Emit;
 using HarmonyLib;
 
 namespace ONI_Truthful_Thermal_Conductivity {
-    [HarmonyPatch(typeof(AdditionalDetailsPanel) , "RefreshDetails")]
 	public class Details_Patch {
 		public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instr) {
 			bool isThermalConductivity = false;

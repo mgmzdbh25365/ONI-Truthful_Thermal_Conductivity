@@ -6,39 +6,55 @@ using System.Reflection;
 
 namespace ONI_Truthful_Thermal_Conductivity {
 	public class Main : UserMod2 {
-		public static string[] modeName_EN = new string[]{
+		/*public static string[] modeName_EN = new string[]{
 			"low",
 			"normal",
 			"high",
 			"strict",
 			"crazy"
-		};
-		public string[] modeName = modeName_EN;
-		public static string[] modeName_ZH = new string[]{
+		};*/
+		public string[] modeName {
+				get => new string[]{
+				STRINGS.MODE_LOW,
+				STRINGS.MODE_NORMAL,
+				STRINGS.MODE_HIGH,
+				STRINGS.MODE_STRICT,
+				STRINGS.MODE_CRAZY
+			};
+		}
+		/*public static string[] modeName_ZH = new string[]{
 			"低",
 			"标准",
 			"高",
 			"严格",
 			"疯狂"
-		};
-		public static string[] modeTips_EN = new string[]{
+		};*/
+		/*public static string[] modeTips_EN = new string[]{
 			"Retained 3 decimal places, consistent with the original version.",
 			"Fixed to 3 decimal places, displaying up to 8 decimal places.",
 			"Fixed to 3 decimal places, displaying at least 7 significant digits.",
 			"At this precision, it ensures that the string can be converted to the same single float value.",
 			"Retain up to 99 significant digits."
-		};
-		public string[] modeTips = modeTips_EN;
-		public static string[] modeTips_ZH = new string[]{
+		};*/
+		public string[] modeTips {
+				get => new string[]{
+				STRINGS.MODE_TIPS_LOW,
+				STRINGS.MODE_TIPS_NORMAL,
+				STRINGS.MODE_TIPS_HIGH,
+				STRINGS.MODE_TIPS_STRICT,
+				STRINGS.MODE_TIPS_CRAZY
+			};
+		}
+		/*public static string[] modeTips_ZH = new string[]{
 			"保留了3位小数，跟原版保持一致。",
 			"固定保留3位小数，至多显示8位小数。",
 			"固定保留3位小数，至少显示7位有效数字。",
 			"该精度下，确保根据字符串能转换为相同的浮点数值。",
-			"至多保留99位有效数字（但单精度浮点数的最小精度为2e-149，有着105位有效数字）。"
-		};
-		public static string tooltip_EN = "this mode,\"1/9\"will be displayed as:{0}\nClick to switch the accuracy of the thermal conductivity display.\nLong press and hold the mouse to switch the units displayed for thermal conductivity.";
-		public string tooltip = tooltip_EN;
-		public static string tooltip_ZH = "该精度下，“1/9”将会显示为：{0}\n点击以切换热导率显示的精准程度。\n长按以切换热导率显示的单位。";
+			"至多保留99位有效数字（但单精度浮点数的最小精度为2^-149，有着105位有效数字）。"
+		};*/
+		//public static string tooltip_EN = "this mode,\"1/9(0.111111111938953399658203125)\"will be displayed as:{0}\nClick to switch the accuracy of the thermal conductivity display.\nLong press and hold the mouse to switch the units displayed for thermal conductivity.";
+		public string tooltip {get => STRINGS.MODE_DESCRIPTION;}
+		//public static string tooltip_ZH = "该精度下，“1/9(0.111111111938953399658203125)”将会显示为：{0}\n点击以切换热导率显示的精准程度。\n长按以切换热导率显示的单位。";
 		public static string format = "0.000#####";
 		public static string[] formats = new string[] {
 			"0.000",
@@ -69,19 +85,37 @@ namespace ONI_Truthful_Thermal_Conductivity {
 						format = options.custom.scale_format;
 					if (options.custom.tipsChanged) {
 						Tips_Patch.format = options.custom.tips_format;
-						harmony.Patch(typeof(GameUtil).GetMethod("GetFormattedThermalConductivity") , transpiler: new HarmonyMethod(typeof(Tips_Patch) , nameof(Tips_Patch.Transpiler)));
-						harmony.Patch(typeof(GameUtil).GetMethod("GetThermalConductivitySuffix") , transpiler: new HarmonyMethod(typeof(Tips_Patch) , nameof(Tips_Patch.Transpiler)));
+						harmony.Patch(GetMethod_FormattedThermalConductivity() , transpiler: new HarmonyMethod(typeof(Tips_Patch) , nameof(Tips_Patch.Transpiler)));
+						harmony.Patch(GetMethod_ThermalConductivitySuffix() , transpiler: new HarmonyMethod(typeof(Tips_Patch) , nameof(Tips_Patch.Transpiler)));
 					}
 				}
-				harmony.Patch(typeof(GameUtil).GetMethod("GetFormattedThermalConductivity") , transpiler: new HarmonyMethod(typeof(ThermalConductivity_Patch) , nameof(ThermalConductivity_Patch.Transpiler)));
-				harmony.Patch(typeof(AdditionalDetailsPanel).GetMethod("RefreshDetails" , BindingFlags.NonPublic | BindingFlags.Instance) , transpiler: new HarmonyMethod(typeof(Details_Patch) , nameof(Details_Patch.Transpiler)));
-				harmony.Patch(typeof(ModsScreen).GetMethod("BuildDisplay" , BindingFlags.NonPublic | BindingFlags.Instance) , postfix: new HarmonyMethod(typeof(Options_add) , nameof(Options_add.Postfix)));
+				harmony.Patch(GetMethod_FormattedThermalConductivity() , transpiler: new HarmonyMethod(typeof(ThermalConductivity_Patch) , nameof(ThermalConductivity_Patch.Transpiler)));
+				harmony.Patch(GetMethod_Details() , transpiler: new HarmonyMethod(typeof(Details_Patch) , nameof(Details_Patch.Transpiler)));
+				harmony.Patch(GetMethod_BuildDisplay() , postfix: new HarmonyMethod(typeof(Options_add) , nameof(Options_add.Postfix)));
 				data_patch = true;
+
+				Localization.RegisterForTranslation(typeof(STRINGS));
 			}
 			catch {
-				if (options == null)
+				if (options == null) {
 					options = new Options();
-				base.OnLoad(harmony);
+					//base.OnLoad(harmony);
+					try {
+						harmony.Patch(GetMethod_FormattedThermalConductivity() , transpiler: new HarmonyMethod(typeof(ThermalConductivity_Patch) , nameof(ThermalConductivity_Patch.Transpiler)));
+						harmony.Patch(GetMethod_Details() , transpiler: new HarmonyMethod(typeof(Details_Patch) , nameof(Details_Patch.Transpiler)));
+						harmony.Patch(GetMethod_BuildDisplay() , postfix: new HarmonyMethod(typeof(Options_add) , nameof(Options_add.Postfix)));
+					}
+					catch { }
+					data_patch = true;
+					return;
+				}
+				//base.OnLoad(harmony);
+				try {
+					harmony.Patch(GetMethod_FormattedThermalConductivity() , transpiler: new HarmonyMethod(typeof(ThermalConductivity_Patch) , nameof(ThermalConductivity_Patch.Transpiler)));
+					harmony.Patch(GetMethod_Details() , transpiler: new HarmonyMethod(typeof(Details_Patch) , nameof(Details_Patch.Transpiler)));
+					harmony.Patch(GetMethod_BuildDisplay() , postfix: new HarmonyMethod(typeof(Options_add) , nameof(Options_add.Postfix)));
+				}
+				catch { }
 			}
 		}
 		public override void OnAllModsLoaded(Harmony harmony , System.Collections.Generic.IReadOnlyList<Mod> mods) {
@@ -117,13 +151,13 @@ namespace ONI_Truthful_Thermal_Conductivity {
 					if (options.custom.scaleChanged)
 						format = options.custom.scale_format;
 					if (main_harmony != null) {
-						main_harmony.Unpatch(typeof(GameUtil).GetMethod("GetFormattedThermalConductivity") , typeof(Tips_Patch).GetMethod(nameof(Tips_Patch.Transpiler)));
-						main_harmony.Unpatch(typeof(GameUtil).GetMethod("GetThermalConductivitySuffix") , typeof(Tips_Patch).GetMethod(nameof(Tips_Patch.Transpiler)));
+						main_harmony.Unpatch(GetMethod_FormattedThermalConductivity() , typeof(Tips_Patch).GetMethod(nameof(Tips_Patch.Transpiler)));
+						main_harmony.Unpatch(GetMethod_ThermalConductivitySuffix() , typeof(Tips_Patch).GetMethod(nameof(Tips_Patch.Transpiler)));
 					}
 					if (options.custom.tipsChanged) {
 						Tips_Patch.format = options.custom.tips_format;
-						main_harmony.Patch(typeof(GameUtil).GetMethod("GetFormattedThermalConductivity") , transpiler: new HarmonyMethod(typeof(Tips_Patch) , nameof(Tips_Patch.Transpiler)));
-						main_harmony.Patch(typeof(GameUtil).GetMethod("GetThermalConductivitySuffix") , transpiler: new HarmonyMethod(typeof(Tips_Patch) , nameof(Tips_Patch.Transpiler)));
+						main_harmony.Patch(GetMethod_FormattedThermalConductivity() , transpiler: new HarmonyMethod(typeof(Tips_Patch) , nameof(Tips_Patch.Transpiler)));
+						main_harmony.Patch(GetMethod_ThermalConductivitySuffix() , transpiler: new HarmonyMethod(typeof(Tips_Patch) , nameof(Tips_Patch.Transpiler)));
 					}
 				}
 			}
@@ -131,16 +165,39 @@ namespace ONI_Truthful_Thermal_Conductivity {
 			}
 			try {
 				if (main_harmony != null) {
-					main_harmony.Unpatch(typeof(GameUtil).GetMethod("GetFormattedThermalConductivity") , typeof(ThermalConductivity_Patch).GetMethod(nameof(ThermalConductivity_Patch.Transpiler)));
-					main_harmony.Unpatch(typeof(AdditionalDetailsPanel).GetMethod("RefreshDetails" , BindingFlags.NonPublic | BindingFlags.Instance) , typeof(Details_Patch).GetMethod(nameof(Details_Patch.Transpiler)));
-					main_harmony.Unpatch(typeof(ModsScreen).GetMethod("BuildDisplay" , BindingFlags.NonPublic | BindingFlags.Instance) , typeof(Options_add).GetMethod(nameof(Options_add.Postfix)));
-					main_harmony.Patch(typeof(GameUtil).GetMethod("GetFormattedThermalConductivity") , transpiler: new HarmonyMethod(typeof(ThermalConductivity_Patch) , nameof(ThermalConductivity_Patch.Transpiler)));
-					main_harmony.Patch(typeof(AdditionalDetailsPanel).GetMethod("RefreshDetails" , BindingFlags.NonPublic | BindingFlags.Instance) , transpiler: new HarmonyMethod(typeof(Details_Patch) , nameof(Details_Patch.Transpiler)));
-					main_harmony.Patch(typeof(ModsScreen).GetMethod("BuildDisplay" , BindingFlags.NonPublic | BindingFlags.Instance) , postfix: new HarmonyMethod(typeof(Options_add) , nameof(Options_add.Postfix)));
+					main_harmony.Unpatch(GetMethod_FormattedThermalConductivity() , typeof(ThermalConductivity_Patch).GetMethod(nameof(ThermalConductivity_Patch.Transpiler)));
+					main_harmony.Unpatch(GetMethod_Details() , typeof(Details_Patch).GetMethod(nameof(Details_Patch.Transpiler)));
+					main_harmony.Unpatch(GetMethod_BuildDisplay() , typeof(Options_add).GetMethod(nameof(Options_add.Postfix)));
+					main_harmony.Patch(GetMethod_FormattedThermalConductivity() , transpiler: new HarmonyMethod(typeof(ThermalConductivity_Patch) , nameof(ThermalConductivity_Patch.Transpiler)));
+					main_harmony.Patch(GetMethod_Details() , transpiler: new HarmonyMethod(typeof(Details_Patch) , nameof(Details_Patch.Transpiler)));
+					main_harmony.Patch(GetMethod_BuildDisplay() , postfix: new HarmonyMethod(typeof(Options_add) , nameof(Options_add.Postfix)));
 				}
 			}
 			catch {
 			}
 		}
+		public static MethodInfo GetMethod_FormattedThermalConductivity() {
+			MethodInfo method = typeof(GameUtil).GetMethod("GetFormattedThermalConductivity");
+			//if (method == null) method = typeof(Main).GetMethod(nameof(DoNothing) , BindingFlags.Public);
+			return method;
+		}
+		public static MethodInfo GetMethod_ThermalConductivitySuffix() {
+			MethodInfo method = typeof(GameUtil).GetMethod("GetThermalConductivitySuffix");
+			//if (method == null) method = typeof(Main).GetMethod(nameof(DoNothing) , BindingFlags.Public);
+			return method;
+		}
+
+		public static MethodInfo GetMethod_BuildDisplay() {
+			MethodInfo method = typeof(ModsScreen).GetMethod("BuildDisplay" , BindingFlags.NonPublic | BindingFlags.Instance);
+			//if (method == null) method = typeof(Main).GetMethod(nameof(DoNothing) , BindingFlags.Public);
+			return method;
+		}
+		public static MethodInfo GetMethod_Details() {
+			MethodInfo method = typeof(AdditionalDetailsPanel).GetMethod("RefreshDetailsPanel" , BindingFlags.NonPublic | BindingFlags.Static);
+			if (method == null) method = typeof(AdditionalDetailsPanel).GetMethod("RefreshDetails" , BindingFlags.NonPublic | BindingFlags.Instance);
+			//else if (method == null) method = typeof(Main).GetMethod(nameof(DoNothing) , BindingFlags.Public);
+			return method;
+		}
+		public static void DoNothing() { }
 	}
 }
