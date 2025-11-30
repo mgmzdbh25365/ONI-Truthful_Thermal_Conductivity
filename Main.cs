@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Klei;
 using KMod;
 using Newtonsoft.Json;
 using System.IO;
@@ -74,7 +75,7 @@ namespace ONI_Truthful_Thermal_Conductivity {
 			main = this;
 			main_harmony = harmony;
 			try {
-				options = JsonConvert.DeserializeObject<Options>(File.ReadAllText(Path.Combine(path , "config.json")));
+				options = JsonConvert.DeserializeObject<Options>(File.ReadAllText(FileSystem.Normalize(Path.Combine(path, "config.json"))));
 				if (options.mode < 0)
 					options.mode = 0;
 				else if (options.mode >= formats.Length)
@@ -91,7 +92,8 @@ namespace ONI_Truthful_Thermal_Conductivity {
 				}
 				harmony.Patch(GetMethod_FormattedThermalConductivity() , transpiler: new HarmonyMethod(typeof(ThermalConductivity_Patch) , nameof(ThermalConductivity_Patch.Transpiler)));
 				harmony.Patch(GetMethod_Details() , transpiler: new HarmonyMethod(typeof(Details_Patch) , nameof(Details_Patch.Transpiler)));
-				harmony.Patch(GetMethod_BuildDisplay() , postfix: new HarmonyMethod(typeof(Options_add) , nameof(Options_add.Postfix)));
+				if(options.option_insertion)
+					harmony.Patch(GetMethod_BuildDisplay() , postfix: new HarmonyMethod(typeof(Options_add) , nameof(Options_add.Postfix)));
 				data_patch = true;
 
 				Localization.RegisterForTranslation(typeof(STRINGS));
@@ -128,7 +130,7 @@ namespace ONI_Truthful_Thermal_Conductivity {
 			if (options.mode >= formats.Length)
 				options.mode = 0;
 			format = formats[options.mode];
-			File.WriteAllText(Path.Combine(main.path , "config.json") , JsonConvert.SerializeObject(options));
+			File.WriteAllText(FileSystem.Normalize(Path.Combine(main.path , "config.json")) , JsonConvert.SerializeObject(options, Formatting.Indented));
 			main.ReLoad();
 			kButton.GetComponentInChildren<LocText>().text = main.modeName[options.mode];
 			string tooltip = Main.main.modeTips[Main.options.mode] + '\n' + Main.main.tooltip;
@@ -193,7 +195,7 @@ namespace ONI_Truthful_Thermal_Conductivity {
 			return method;
 		}
 		public static MethodInfo GetMethod_Details() {
-			MethodInfo method = typeof(AdditionalDetailsPanel).GetMethod("RefreshDetailsPanel" , BindingFlags.NonPublic | BindingFlags.Static);
+			MethodInfo method = typeof(AdditionalDetailsPanel).GetMethod("RefreshDetailsPanel" , BindingFlags.NonPublic | BindingFlags.Static);//U51-596100 - SD
 			if (method == null) method = typeof(AdditionalDetailsPanel).GetMethod("RefreshDetails" , BindingFlags.NonPublic | BindingFlags.Instance);
 			//else if (method == null) method = typeof(Main).GetMethod(nameof(DoNothing) , BindingFlags.Public);
 			return method;

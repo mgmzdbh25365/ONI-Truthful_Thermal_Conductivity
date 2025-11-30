@@ -2,6 +2,7 @@
     public class Options {
         public int mode = 1;
         public Custom custom = null;
+        public bool option_insertion = true; 
         public class Custom {
             public bool scaleChanged = false;
             public bool tipsChanged = false;
